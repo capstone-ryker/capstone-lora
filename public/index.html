@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naver Map Example</title>
+</head>
+<body>
+  <h1>Naver Map Location</h1>
+  <div id="map"></div>
+
+  <script>
+    async function fetchLatestLocation() {
+      try {
+        const response = await fetch('/api/latest-location');
+        const location = await response.json();
+        return location;
+      } catch (error) {
+        console.error('Error fetching latest location:', error);
+      }
+    }
+
+    async function updateMap() {
+      const location = await fetchLatestLocation();
+      if (location) {
+        const response = await fetch('/api/location', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(location),
+        });
+        const data = await response.json();
+        console.log('Map URL:', data.mapUrl);
+        const mapDiv = document.getElementById('map');
+        mapDiv.innerHTML = ''; // 이전 이미지 제거
+        const img = new Image();
+        img.src = data.mapUrl;
+        img.alt = "Map";
+        img.onerror = function() {
+          this.onerror = null;
+          this.src = 'error.png'; // error.png 파일이 public 폴더에 있어야 합니다.
+        };
+        mapDiv.appendChild(img);
+      }
+    }
+
+    // 주기적으로 맵 업데이트
+    setInterval(updateMap, 5000); // 5초마다 업데이트
+
+    // 페이지 로드 시 맵 업데이트
+    window.onload = updateMap;
+  </script>
+</body>
+</html>
