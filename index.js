@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 const path = require('path');
 
-// Firebase 설정 파일 경로 (serviceAccountKey.json)
 const serviceAccount = require(path.join(__dirname, 'serviceAccountKey.json'));
 
 const app = express();
@@ -11,14 +10,14 @@ const PORT = process.env.PORT || 5000;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://abdd-bec01.firebaseio.com'
+  databaseURL: 'https://abdd-bec01-default-rtdb.firebaseio.com/'
 });
 
 app.use(bodyParser.json());
 
 app.post('/notify', (req, res) => {
     const message = req.body.message;
-    const registrationToken = '<user-device-token>'; // 사용자 디바이스 토큰
+    const registrationToken = req.body.token; // 사용자 디바이스 토큰
 
     const payload = {
         notification: {
