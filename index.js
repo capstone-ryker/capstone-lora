@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://<your-database-name>.firebaseio.com/'
+  databaseURL: 'https://abdd-bec01.firebaseio.com'
 });
 
 app.use(bodyParser.json());
