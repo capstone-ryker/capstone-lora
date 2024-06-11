@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.post('/notify', (req, res) => {
     const message = req.body.message;
-    const registrationToken = '<user-device-token>'; // 사용자 디바이스 토큰
+    const registrationToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkIjp7InVpZCI6IjkwMTU1M2QxLTEzMDUtNGZmZS04MjdhLTMxNWVjYzBlOTRjYSIsInByb2plY3QiOiJhcGkiLCJkZXZlbG9wZXIiOiJoaWRvdG9sQGdtYWlsOmNvbSJ9LCJ2IjowLCJleHAiOjE2NzM5MTc0MjYxLCJpYXQiOjE3MTgxMDIyNjF9.mOayd9fCovCrtXlQtWLnbkLsdSc6v-tUCoWyXH3QuIo'; // 사용자 디바이스 토큰
 
     const payload = {
         notification: {
