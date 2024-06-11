@@ -64,8 +64,26 @@
 
     // 페이지 로드 시 맵 업데이트
     window.onload = updateMap;
+
+    // 앱 인벤터 알림 받기
+    async function sendNotification(message) {
+      try {
+        const response = await fetch('/notify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+        const data = await response.json();
+        console.log('Notification response:', data);
+      } catch (error) {
+        console.error('Error sending notification:', error);
+      }
+    }
+
+    // 예시: 알림 보내기
+    sendNotification('Hello from App Inventor!');
   </script>
 </body>
 </html>
-
-
