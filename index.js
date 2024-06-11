@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
-const serviceAccount = require('./path/to/serviceAccountKey.json'); // Firebase 설정 파일 경로
+const path = require('path');
+
+// Firebase 설정 파일 경로 (serviceAccountKey.json)
+const serviceAccount = require(path.join(__dirname, 'serviceAccountKey.json'));
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +18,7 @@ app.use(bodyParser.json());
 
 app.post('/notify', (req, res) => {
     const message = req.body.message;
-    const registrationToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkIjp7InVpZCI6IjkwMTU1M2QxLTEzMDUtNGZmZS04MjdhLTMxNWVjYzBlOTRjYSIsInByb2plY3QiOiJhcGkiLCJkZXZlbG9wZXIiOiJoaWRvdG9sQGdtYWlsOmNvbSJ9LCJ2IjowLCJleHAiOjE2NzM5MTc0MjYxLCJpYXQiOjE3MTgxMDIyNjF9.mOayd9fCovCrtXlQtWLnbkLsdSc6v-tUCoWyXH3QuIo'; // 사용자 디바이스 토큰
+    const registrationToken = '<user-device-token>'; // 사용자 디바이스 토큰
 
     const payload = {
         notification: {
