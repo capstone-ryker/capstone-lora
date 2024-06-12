@@ -5,7 +5,7 @@ const path = require('path');
 
 // 네이버 지도 API 키 설정
 const CLIENT_ID = '827gqzxl9b';
-const CLIENT_SECRET = '0FoGmVF5PW5t3MbBRguI5h2Pftv1ev4hjSkWjuTp';
+const CLIENT_SECRET = '0FoGmVF5t3MbBRguI5h2Pftv1ev4hjSkWjuTp';
 
 // 위치 데이터를 저장할 변수
 let latestLocation = { lat: 37.5665, lng: 126.9780 };
@@ -92,7 +92,7 @@ app.post('/notify', (req, res) => {
 });
 
 // 서버 시작
-const PORT = process.env.PORT || 3001; // 다른 포트 번호 사용
+const PORT = process.env.PORT || 3000; // 환경 변수를 사용하여 포트를 설정
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
