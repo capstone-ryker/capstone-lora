@@ -92,7 +92,7 @@ app.post('/notify', (req, res) => {
 });
 
 // 서버 시작
-const PORT = process.env.PORT || 3000; // 환경 변수를 사용하여 포트를 설정
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
