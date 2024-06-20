@@ -3,67 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>대상의 현재 위치</title>
+  <title>센서 데이터 모니터링</title>
   <style>
-    /* 지도 크기 조절 */
-    #map {
-      width: 50%; /* 너비를 페이지의 100%로 설정 */
-      height: 700px; /* 높이를 500px로 설정 */
-      border: 1px solid #000; /* 테두리 추가 (선택 사항) */
-      position: relative; /* 상대적 위치 설정 */
-    }
-    #map img {
-      width: 100%; /* 이미지 너비를 100%로 설정 */
-      height: 100%; /* 이미지 높이를 100%로 설정 */
-      object-fit: cover; /* 이미지가 컨테이너에 맞게 조절 */
+    /* 센서 데이터 표시 영역 스타일 */
+    #sensor-data {
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>대상의 현재 위치</h1>
-  <div id="map"></div>
+  <h1>센서 데이터 모니터링</h1>
+  <div id="sensor-data">
+    <h2>센서 데이터</h2>
+    <p>온도: <span id="temperature">-</span> °C</p>
+    <p>습도: <span id="humidity">-</span> %</p>
+  </div>
 
   <script>
-    async function fetchLatestLocation() {
+    async function fetchSensorData() {
       try {
-        const response = await fetch('/api/latest-location');
-        const location = await response.json();
-        return location;
-      } catch (error) {
-        console.error('Error fetching latest location:', error);
-      }
-    }
-
-    async function updateMap() {
-      const location = await fetchLatestLocation();
-      if (location) {
-        const response = await fetch('/api/location', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(location),
-        });
+        const response = await fetch('/api/sensor-data');
         const data = await response.json();
-        console.log('Map URL:', data.mapUrl);
-        const mapDiv = document.getElementById('map');
-        mapDiv.innerHTML = ''; // 이전 이미지 제거
-        const img = new Image();
-        img.src = data.mapUrl;
-        img.alt = "Map";
-        img.onerror = function() {
-          this.onerror = null;
-          this.src = 'error.png'; // error.png 파일이 public 폴더에 있어야 합니다.
-        };
-        mapDiv.appendChild(img);
+        return data;
+      } catch (error) {
+        console.error('Error fetching sensor data:', error);
       }
     }
 
-    // 주기적으로 맵 업데이트
-    setInterval(updateMap, 5000); // 5초마다 업데이트
+    async function updateSensorData() {
+      const sensorData = await fetchSensorData();
+      if (sensorData) {
+        document.getElementById('temperature').textContent = sensorData.temperature;
+        document.getElementById('humidity').textContent = sensorData.humidity;
+      }
+    }
 
-    // 페이지 로드 시 맵 업데이트
-    window.onload = updateMap;
+    // 주기적으로 센서 데이터 업데이트
+    setInterval(updateSensorData, 5000); // 5초마다 센서 데이터 업데이트
+
+    // 페이지 로드 시 센서 데이터 업데이트
+    window.onload = updateSensorData;
 
     // 앱 인벤터 알림 받기
     async function sendNotification(message) {
