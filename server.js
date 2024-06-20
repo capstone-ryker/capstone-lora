@@ -11,6 +11,7 @@ const CLIENT_SECRET = '0FoGmVF5PW5t3MbBRguI5h2Pftv1ev4hjSkWjuTp';
 let latestLocation = { lat: 37.5665, lng: 126.9780 };
 let cache = {};
 let locationQueue = [];
+let sensorData = {}; // 추가: 센서 데이터를 저장할 변수
 
 // 캐시 유효 시간 설정 (예: 5분)
 const CACHE_DURATION = 20 * 60 * 1000;
@@ -82,6 +83,22 @@ app.post('/api/location', async (req, res) => {
 // 클라이언트가 최신 위치 데이터를 요청할 때 제공
 app.get('/api/latest-location', (req, res) => {
   res.json(latestLocation);
+});
+
+// Arduino에서 데이터를 전송받기 위한 엔드포인트
+app.post('/api/sensor-data', (req, res) => {
+  const { temperature, humidity } = req.body;
+  sensorData = { temperature, humidity, timestamp: Date.now() };
+  console.log('Received sensor data:', sensorData);
+  res.status(200).send('Sensor data received');
+});
+
+// 안드로이드 앱에서 제어 명령을 받기 위한 엔드포인트
+app.post('/api/control', (req, res) => {
+  const { command } = req.body;
+  console.log('Received control command:', command);
+  // 여기서 명령을 처리하고 필요한 작업을 수행할 수 있습니다.
+  res.status(200).send('Control command received');
 });
 
 // 서버 시작
